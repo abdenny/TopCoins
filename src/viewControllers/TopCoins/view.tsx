@@ -7,9 +7,15 @@ interface Props {
   topCoins?: CryptoAssets['data'];
   lastCheckedAt?: CryptoAssets['timestamp'];
   isLoading: boolean;
+  handleTextChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TopCoinsView = ({ topCoins, lastCheckedAt, isLoading }: Props): JSX.Element => {
+const TopCoinsView = ({
+  topCoins,
+  lastCheckedAt,
+  isLoading,
+  handleTextChange,
+}: Props): JSX.Element => {
   return (
     <main className="flex flex-col ">
       {isLoading ? (
@@ -25,23 +31,10 @@ const TopCoinsView = ({ topCoins, lastCheckedAt, isLoading }: Props): JSX.Elemen
             type="search"
             name="search"
             placeholder="Search by name or symbol"
+            onChange={handleTextChange}
             className="bg-white flex justify-start w-72 text-gray-700 h-12 px-2 mx-10 md:mx-16 my-2 rounded-md text-md border-2 focus:outline-blue-500 focus:border-0"
           />
-          {/* <div className="flex-none flex  bg-gray-100 px-4 items-center">
-            <a
-              href="#"
-              className="inline-block rounded-full text-blue-900 bg-blue-100 text-xs font-bold mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 "
-            >
-              Top 100
-            </a>
-            <a
-              href="#"
-              className="inline-block rounded-full text-black text-xs mr-1 md:mr-2 mb-2 px-2 md:px-4 py-1 "
-            >
-              Search
-            </a>
-          </div> */}
-          <div className="flex min-w-full shadow overflow-x-scroll bg-white md:px-16 px-8 pt-3 rounded-bl-lg rounded-br-lg">
+          <div className="flex min-w-full shadow  bg-white md:px-16 px-8 pt-3 rounded-bl-lg rounded-br-lg">
             <Table
               tableHeader={
                 <Header
