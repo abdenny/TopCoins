@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const TopAssets = lazy(() => import('viewControllers/TopAssets'));
+const AssetDetail = lazy(() => import('viewControllers/AssetDetail'));
 
 // eslint-disable-next-line react/display-name
 export default (): JSX.Element => (
@@ -9,7 +10,7 @@ export default (): JSX.Element => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<TopAssets />} />
-        <Route path="test" element={<div>Child comp</div>} />
+        <Route path="/asset/:assetId" element={<AssetDetail />} />
 
         {/* Fallback route */}
         <Route path="*" element={<div>404</div>} />

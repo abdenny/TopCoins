@@ -1,5 +1,6 @@
 import type { CryptoAssets, TopAssetsModelInterface } from 'types';
-import { GET_CRYPTO_ASSETS } from 'api';
+
+import { topCryptoAssets } from 'api';
 import useFetch from 'hooks/useFetch';
 
 const useTopAssets = (): TopAssetsModelInterface => {
@@ -7,10 +8,10 @@ const useTopAssets = (): TopAssetsModelInterface => {
     data: cryptoAssetsData,
     error: cryptoAssetsError,
     loading: cryptoAssetsLoading,
-  } = useFetch<CryptoAssets>(GET_CRYPTO_ASSETS);
+  } = useFetch<CryptoAssets>(topCryptoAssets());
 
   return {
-    topAssets: cryptoAssetsData || [],
+    topAssets: cryptoAssetsData,
     isTopAssetsLoading: !cryptoAssetsData,
   };
 };

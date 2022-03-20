@@ -1,2 +1,2 @@
 export * from './crypto';
-export * from './viewModelsInterfaces';
+export * from './viewModelInterfaces';

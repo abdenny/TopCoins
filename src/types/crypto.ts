@@ -13,6 +13,6 @@ export interface Asset {
 }
 
 export interface CryptoAssets {
-  data: Asset;
+  data: Array<Asset>;
   timestamp: number;
 }
