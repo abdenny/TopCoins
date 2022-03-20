@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import axios from 'util/axios';
 
@@ -7,15 +7,19 @@ interface State<T> {
   data?: T;
   error?: Error;
 }
-type Action<T> = { type: 'fetched'; payload: T } | { type: 'error'; payload: Error };
+type Action<T> =
+  | { type: 'fetched'; payload: T }
+  | { type: 'error'; payload: Error }
+  | { type: 'reset' };
 
-function useFetch<T = unknown>(url: string): State<T> {
-  // Ref to ensure we don't call a state update on an unmounted component.
-  const endRequest = useRef(false);
+interface Opts {
+  isDisabled: boolean;
+}
 
-  // Initial state of loading is true. Is set to false when the request is completed/errors.
+function useFetch<T = unknown>(url: string, opts?: Opts): { state: State<T>; reset: () => void } {
+  // Initial state of loading is true, if the hook is not disabled. Is set to false when the request is completed/errors.
   const initialState: State<T> = {
-    loading: true,
+    loading: opts?.isDisabled ? false : true,
     error: undefined,
     data: undefined,
   };
@@ -26,6 +30,8 @@ function useFetch<T = unknown>(url: string): State<T> {
         return { ...initialState, data: action.payload, loading: action.payload ? false : true };
       case 'error':
         return { ...initialState, error: action.payload, loading: action.payload ? false : true };
+      case 'reset':
+        return { ...initialState };
       default:
         return state;
     }
@@ -34,6 +40,9 @@ function useFetch<T = unknown>(url: string): State<T> {
   const [state, dispatch] = useReducer(fetchReducer, initialState);
 
   useEffect(() => {
+    if (!url) return;
+    if (opts?.isDisabled) return;
+
     const fetchData = async () => {
       try {
         const response = await axios(url);
@@ -42,23 +51,19 @@ function useFetch<T = unknown>(url: string): State<T> {
         }
         const data = response.data as T;
 
-        if (endRequest.current) return;
+        console.log('payload before dispatch', data);
         dispatch({ type: 'fetched', payload: data });
       } catch (error) {
-        if (endRequest.current) return;
         dispatch({ type: 'error', payload: error as Error });
       }
     };
 
     fetchData();
+  }, [url, opts?.isDisabled]);
 
-    // Initial value is false, set to true on useEffect cleanup to avoid a possible state update after the component is unmounted.
-    return () => {
-      endRequest.current = true;
-    };
-  }, [url]);
+  const reset = () => dispatch({ type: 'reset' });
 
-  return state;
+  return { state, reset };
 }
 
 export default useFetch;

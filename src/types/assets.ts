@@ -12,6 +12,10 @@ export interface Asset {
   vwap24Hr: string;
 }
 
+export interface CryptoAsset {
+  data: Asset;
+  timestamp: number;
+}
 export interface CryptoAssets {
   data: Array<Asset>;
   timestamp: number;

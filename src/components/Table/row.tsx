@@ -1,6 +1,7 @@
 import type { Asset } from 'types';
 
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 type Props = Pick<
   Asset,
@@ -29,7 +30,7 @@ const Row = ({
         </div>
       </td>
       <td className="px-6 py-4 border-b border-gray-500">
-        <Link to={`coin/${id}`}>
+        <Link to={`?coinDetail=${id}`}>
           <div className="text-sm leading-5 text-blue-900">{name}</div>
         </Link>
       </td>
@@ -43,9 +44,10 @@ const Row = ({
         <span className="relative inline-block px-3 py-1 font-semibold text-gray-700 leading-tight">
           <span
             aria-hidden
-            className={`absolute inset-0 opacity-50 rounded-full ${
+            className={classNames(
+              'absolute inset-0 opacity-50 rounded-full',
               changePercent24Hr > 0 ? 'bg-green-200' : 'bg-red-200'
-            }`}
+            )}
           ></span>
           <span className="relative text-xs">{changePercent24Hr}</span>
         </span>
@@ -59,7 +61,7 @@ const Row = ({
       </td>
       <td className="  px-6 py-4 border-b border-gray-500 text-sm leading-5">
         <Link
-          to={`/coin/${id}`}
+          to={`?coinDetail=${id}`}
           className="px-5 py-2  text-center border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none"
         >
           Details
