@@ -3,7 +3,7 @@ import type { CryptoAssets, TopAssetsModelInterface } from 'types';
 import { topCryptoAssets } from 'api';
 import useFetch from 'hooks/useFetch';
 
-const useTopAssets = (): TopAssetsModelInterface => {
+const useTopCoins = (): TopAssetsModelInterface => {
   const {
     data: cryptoAssetsData,
     error: cryptoAssetsError,
@@ -11,9 +11,9 @@ const useTopAssets = (): TopAssetsModelInterface => {
   } = useFetch<CryptoAssets>(topCryptoAssets());
 
   return {
-    topAssets: cryptoAssetsData,
-    isTopAssetsLoading: !cryptoAssetsData,
+    topCoins: cryptoAssetsData,
+    isTopCoinsLoading: !cryptoAssetsData,
   };
 };
 
-export default useTopAssets;
+export default useTopCoins;
