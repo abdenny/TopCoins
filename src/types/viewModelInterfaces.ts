@@ -1,4 +1,4 @@
-import type { CryptoAssets, CryptoAsset, Rate } from 'types';
+import type { CryptoAssets, CryptoAsset } from 'types';
 
 export interface TopAssetsModelInterface {
   topCoins?: CryptoAssets;
@@ -6,7 +6,5 @@ export interface TopAssetsModelInterface {
   coinDetail?: CryptoAsset;
   isCoinDetailLoading: boolean;
   resetCoinDetail: () => void;
-  rateDetail?: Rate;
-  isRateDetailLoading: boolean;
-  resetRateDetail: () => void;
+  calculateUsdValue: (assetAmount: string) => string;
 }

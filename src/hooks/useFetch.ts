@@ -17,7 +17,7 @@ interface Opts {
 }
 
 function useFetch<T = unknown>(url: string, opts?: Opts): { state: State<T>; reset: () => void } {
-  // Initial state of loading is true, if the hook is not disabled. Is set to false when the request is completed/errors.
+  // Initial state of loading is true if the hook is not disabled. Is set to false when the request is completed/errors.
   const initialState: State<T> = {
     loading: opts?.isDisabled ? false : true,
     error: undefined,
@@ -51,7 +51,6 @@ function useFetch<T = unknown>(url: string, opts?: Opts): { state: State<T>; res
         }
         const data = response.data as T;
 
-        console.log('payload before dispatch', data);
         dispatch({ type: 'fetched', payload: data });
       } catch (error) {
         dispatch({ type: 'error', payload: error as Error });

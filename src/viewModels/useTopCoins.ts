@@ -1,5 +1,5 @@
-import type { CryptoAsset, Rate, CryptoAssets, TopAssetsModelInterface } from 'types';
-import { topCryptoAssets, oneCryptoAsset, oneCryptoRate } from 'api';
+import type { CryptoAsset, CryptoAssets, TopAssetsModelInterface } from 'types';
+import { topCryptoAssets, oneCryptoAsset } from 'api';
 import useFetch from 'hooks/useFetch';
 import { useSelectParam } from 'hooks/useSearchParamHelpers';
 
@@ -16,11 +16,12 @@ const useTopCoins = (): TopAssetsModelInterface => {
     // When there is no coinDetailParam, we don't want to fetch the detail data.
   } = useFetch<CryptoAsset>(oneCryptoAsset(coinDetailParam), { isDisabled: !coinDetailParam });
 
-  const {
-    state: { data: RateDetailData, error: RateDetailError, loading: RateDetailLoading },
-    reset: resetRateDetail,
-    // When there is no coinDetailParam, we don't want to fetch the rate data.
-  } = useFetch<Rate>(oneCryptoRate(coinDetailParam), { isDisabled: !coinDetailParam });
+  const calculateUsdValue = (assetAmount: string): string => {
+    const usdValue = (
+      parseFloat(assetAmount) * parseFloat(coinDetailData?.data.priceUsd ?? '')
+    ).toFixed(2);
+    return usdValue;
+  };
 
   return {
     topCoins: topCoinsData,
@@ -28,9 +29,7 @@ const useTopCoins = (): TopAssetsModelInterface => {
     coinDetail: coinDetailData,
     isCoinDetailLoading: coinDetailLoading,
     resetCoinDetail,
-    rateDetail: RateDetailData,
-    isRateDetailLoading: RateDetailLoading,
-    resetRateDetail,
+    calculateUsdValue,
   };
 };
 

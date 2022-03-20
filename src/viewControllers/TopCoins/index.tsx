@@ -12,27 +12,8 @@ const TopCoinsController = (): JSX.Element => {
     coinDetail,
     isCoinDetailLoading,
     resetCoinDetail,
-    rateDetail,
-    isRateDetailLoading,
-    resetRateDetail,
+    calculateUsdValue,
   } = useTopCoins();
-
-  // Start Modal Logic
-  const coinDetailParam = useSelectParam('coinDetail');
-  const removeParam = useRemoveParam('coinDetail');
-
-  const [isViewingDetailModal, setIsViewingDetailModal] = useState(false);
-
-  useEffect(() => {
-    setIsViewingDetailModal(!!coinDetailParam);
-  }, [coinDetailParam]);
-
-  // Removing the param from the url will close the modal because of the useEffect above. Reset VM data so when another values is selected, the modal will not flash old data as it fetches the new coin.
-  const closeDetailModal = (): void => {
-    removeParam();
-    resetCoinDetail();
-    resetRateDetail();
-  };
 
   // Start Filter Logic
   const [filterText, setFilterText] = useState('');
@@ -48,6 +29,40 @@ const TopCoinsController = (): JSX.Element => {
       coin.name.toLowerCase().includes(debouncedFilterText.toLowerCase()) ||
       coin.symbol.toLowerCase().includes(debouncedFilterText.toLowerCase())
   );
+
+  // Start Conversion Form Logic
+  const [conversionText, setConversionText] = useState('');
+  const [convertedValue, setConvertedValue] = useState('');
+
+  const handleConversionText = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setConversionText(e.target.value);
+  };
+
+  const submitConversion = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const calc = calculateUsdValue(conversionText);
+    setConvertedValue(calc);
+    setConversionText('');
+  };
+
+  // Start Modal Logic
+  const coinDetailParam = useSelectParam('coinDetail');
+  const removeParam = useRemoveParam('coinDetail');
+
+  const [isViewingDetailModal, setIsViewingDetailModal] = useState(false);
+
+  useEffect(() => {
+    setIsViewingDetailModal(!!coinDetailParam);
+  }, [coinDetailParam]);
+
+  // Removing the param from the url will close the modal because of the useEffect above. Reset VM data so when another values is selected, the modal will not flash old data as it fetches the new coin.
+  const closeDetailModal = (): void => {
+    removeParam();
+    resetCoinDetail();
+    setConversionText('');
+    setConvertedValue('');
+  };
+
   return (
     <View
       topCoins={filterText ? filteredTopCoins : topCoins?.data}
@@ -55,11 +70,13 @@ const TopCoinsController = (): JSX.Element => {
       isTopCoinsLoading={isTopCoinsLoading}
       coinDetail={coinDetail?.data}
       isCoinDetailLoading={isCoinDetailLoading}
-      rateDetail={rateDetail?.data}
-      isRateDetailLoading={isRateDetailLoading}
       handleFilterText={handleFilterText}
       isViewingDetailModal={isViewingDetailModal}
       closeDetailModal={closeDetailModal}
+      handleConversionText={handleConversionText}
+      canSubmitConversion={conversionText.length > 0}
+      submitConversion={submitConversion}
+      convertedValue={convertedValue}
     />
   );
 };

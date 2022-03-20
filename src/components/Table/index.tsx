@@ -2,8 +2,10 @@ interface Props {
   tableHeader: JSX.Element;
   tableRows?: () => Array<JSX.Element>;
 }
+import Header from './header';
+import Row from './row';
 
-const Table = ({ tableHeader, tableRows }: Props): JSX.Element => {
+const Frame = ({ tableHeader, tableRows }: Props): JSX.Element => {
   return (
     <table className="min-w-full">
       {tableHeader}
@@ -11,4 +13,4 @@ const Table = ({ tableHeader, tableRows }: Props): JSX.Element => {
     </table>
   );
 };
-export default Table;
+export default { Frame, Header, Row };
