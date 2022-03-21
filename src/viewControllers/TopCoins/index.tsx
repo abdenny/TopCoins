@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import useTopCoins from 'viewModels/useTopCoins';
 import useDebounce from 'hooks/useDebounce';
 import { useSelectParam, useRemoveParam } from 'hooks/useSearchParamHelpers';
+import { sortByOrder } from 'util/sorters';
 
 import View from './view';
 
@@ -39,30 +40,13 @@ const TopCoinsController = (): JSX.Element => {
     );
   }, [topCoins?.data, debouncedFilterText]);
 
-  const orderTopCoinsByColumn = ({
+  const sortTopCoinsByColumn = ({
     key,
     order,
     sortType,
   }: SortObj & { sortType: 'alpha' | 'numeric' }) => {
     if (!filteredTopCoins) return;
-    const topCoinsCopy = [...filteredTopCoins];
-    topCoinsCopy.sort((a, b) => {
-      if (sortType === 'alpha') {
-        if (order === 'desc') {
-          return a[key] > b[key] ? -1 : 1;
-        } else {
-          return a[key] < b[key] ? -1 : 1;
-        }
-      } else if (sortType === 'numeric') {
-        if (order === 'desc') {
-          return parseFloat(a[key]) > parseFloat(b[key]) ? -1 : 1;
-        } else {
-          return parseFloat(a[key]) < parseFloat(b[key]) ? -1 : 1;
-        }
-      } else {
-        return 0;
-      }
-    });
+    const topCoinsCopy = sortByOrder([...filteredTopCoins], key, order, sortType);
     setCurrentSort({ key, order });
     setFilteredTopCoins(topCoinsCopy);
   };
@@ -111,7 +95,7 @@ const TopCoinsController = (): JSX.Element => {
       isCoinDetailLoading={isCoinDetailLoading}
       handleFilterText={handleFilterText}
       currentSort={currentSort}
-      orderTopCoinsByColumn={orderTopCoinsByColumn}
+      sortTopCoinsByColumn={sortTopCoinsByColumn}
       isViewingDetailModal={isViewingDetailModal}
       closeDetailModal={closeDetailModal}
       handleConversionText={handleConversionText}

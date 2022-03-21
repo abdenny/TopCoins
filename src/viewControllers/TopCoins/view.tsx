@@ -6,6 +6,7 @@ import { toUsdFormat, percentFormat } from 'util/formatters';
 import Table from 'components/Table';
 import Modal from 'components/Modal';
 import Loading from 'components/Loading';
+import SortButton from 'components/SortButton';
 
 interface Props {
   topCoins?: CryptoAssets['data'];
@@ -15,7 +16,7 @@ interface Props {
   isCoinDetailLoading: boolean;
   handleFilterText: (e: React.ChangeEvent<HTMLInputElement>) => void;
   currentSort: SortObj;
-  orderTopCoinsByColumn: (sortObj: SortObj & { sortType: 'alpha' | 'numeric' }) => void;
+  sortTopCoinsByColumn: (sortObj: SortObj & { sortType: 'alpha' | 'numeric' }) => void;
   isViewingDetailModal: boolean;
   closeDetailModal: () => void;
   handleConversionText: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -43,7 +44,7 @@ const TopCoinsView = ({
   isCoinDetailLoading,
   handleFilterText,
   currentSort,
-  orderTopCoinsByColumn,
+  sortTopCoinsByColumn,
   isViewingDetailModal,
   closeDetailModal,
   handleConversionText,
@@ -90,12 +91,13 @@ const TopCoinsView = ({
                           <div className="flex">
                             {headerCell.display}
                             <div className="flex text-gray-700">
-                              <button
-                                type="button"
-                                title="Sort ascending"
-                                aria-label="Sort ascending"
+                              <SortButton
+                                order="asc"
+                                isSelected={
+                                  currentSort.key === headerCell.key && currentSort.order === 'asc'
+                                }
                                 onClick={() =>
-                                  orderTopCoinsByColumn({
+                                  sortTopCoinsByColumn({
                                     key: headerCell.key as HeaderKey,
                                     order: 'asc',
                                     sortType:
@@ -104,24 +106,14 @@ const TopCoinsView = ({
                                         : 'numeric',
                                   })
                                 }
-                                className={classNames(
-                                  'px-1 rounded',
-                                  `${
-                                    currentSort.key === headerCell.key &&
-                                    currentSort.order === 'asc'
-                                      ? 'bg-gray-200'
-                                      : 'bg-white'
-                                  }`
-                                )}
-                              >
-                                ↑
-                              </button>
-                              <button
-                                type="button"
-                                title="Sort descending"
-                                aria-label="Sort descending"
+                              />
+                              <SortButton
+                                order="desc"
+                                isSelected={
+                                  currentSort.key === headerCell.key && currentSort.order === 'desc'
+                                }
                                 onClick={() =>
-                                  orderTopCoinsByColumn({
+                                  sortTopCoinsByColumn({
                                     key: headerCell.key as HeaderKey,
                                     order: 'desc',
                                     sortType:
@@ -130,18 +122,7 @@ const TopCoinsView = ({
                                         : 'numeric',
                                   })
                                 }
-                                className={classNames(
-                                  'px-1 rounded',
-                                  `${
-                                    currentSort.key === headerCell.key &&
-                                    currentSort.order === 'desc'
-                                      ? 'bg-gray-200'
-                                      : 'bg-white'
-                                  }`
-                                )}
-                              >
-                                ↓
-                              </button>
+                              />
                             </div>
                           </div>
                         )}
@@ -183,6 +164,7 @@ const TopCoinsView = ({
               <section className="flex flex-col gap-4 justify-center px-6 py-4">
                 {!isCoinDetailLoading && coinDetail && (
                   <>
+                    <h3 className="text-xl font-semibold">Details:</h3>
                     <ol className="flex flex-col">
                       <li>Rank #{coinDetail.rank}</li>
                       <li>24H %Change: {percentFormat(coinDetail.changePercent24Hr)}</li>
