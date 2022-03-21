@@ -10,6 +10,15 @@
 - TailwindCSS for styling
 - Jest for testing
 
+## Features
+- View the top 100 cryptocurrencies
+    * Sort by ascending and descending for each column
+    * Filter by search text
+- View one cryptocurrency
+    * View specific details
+    * Convert the units of said cryptocurrency to dollars
+
+
 
 ## Run locally
 Ensure that you have [Node.js](https://nodejs.org/) and [yarn](https://yarnpkg.com/getting-started/install) installed on your machine. 
