@@ -1,22 +1,22 @@
-# cra-template-tailwindcss-typescript
+# Expert Institute Technical Project
+ ## Web Application - CoinCapAPI
+ - Completed: 03/21/2022
+ - [Live Demo Here](https://quizzical-curran-172fb7.netlify.app/)
 
-A streamlined [Tailwind CSS v3.x](https://tailwindcss.com) template for [Create React App](https://github.com/facebook/create-react-app) in [TypeScript](https://www.typescriptlang.org/).
 
-> This template installs and sets up [Tailwind CSS](https://tailwindcss.com) with TypeScript support.
+## Technical Specs
+- TypeScript 
+- React (Hooks and Functional Components only) 
+- TailwindCSS for styling
+- Jest for testing
 
-## Usage
 
-```bash
-npx create-react-app --template tailwindcss-typescript
-```
+## Run locally
+Ensure that you have [Node.js](https://nodejs.org/) and [yarn](https://yarnpkg.com/getting-started/install) installed on your machine. 
+1. Clone this repository
+2. Navigate to the projects folder:  `expert-institute-assessment`
+3. Run the command `yarn install` to install the projects dependencies 
+4. Run the command `yarn start` to start the projects server
+5. In a browser, navigate to `http://localhost:3000` (or the port you chose)
+6. To run the test suite, run the command `yarn test`
 
-## Credits
-
-This project was made possible thanks to the following projects.
-
-1. [GeoffSelby/cra-template-tailwindcss](https://github.com/GeoffSelby/cra-template-tailwindcss) - A streamlined Tailwind CSS template for Create React App (in JavaScript).
-2. [cra-template-typescript](https://github.com/facebook/create-react-app/tree/master/packages/cra-template-typescript) - An official TypeScript template for create-react-app.
-
-## License
-
-MIT © [Sung M. Kim](https://sung.codes)
