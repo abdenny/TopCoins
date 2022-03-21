@@ -34,14 +34,13 @@ const TopCoinsView = ({
   submitConversion,
   convertedValue,
 }: Props): JSX.Element => {
-  console.log('detail in view', coinDetail);
   return (
     <>
       <main className="flex flex-col ">
         <section
           className={classNames(
-            'flex justify-center',
-            `${isCoinDetailLoading ? 'visible' : 'invisible'}`
+            'h-screen items-center justify-center',
+            `${isTopCoinsLoading ? 'flex' : 'hidden'}`
           )}
         >
           Loading
@@ -111,28 +110,41 @@ const TopCoinsView = ({
           </Modal.Header>
           <Modal.Body>
             <div>
-              <section className="flex flex-col justify-center">
+              <section className="flex flex-col gap-4 justify-center px-6 py-4">
                 {!isCoinDetailLoading && coinDetail && (
                   <>
                     <div>
                       Currently 1 {coinDetail.name} = $ {coinDetail.priceUsd}
                     </div>
-                    <div>Convert your asset to USD! How many {coinDetail.symbol} do you have?</div>
+                    <div>
+                      How much is your {coinDetail.symbol} worth? Convert to USD and find out!{' '}
+                    </div>
                     {convertedValue && (
                       <div>
-                        You have ${convertedValue} worth of {coinDetail.symbol}
+                        <b>
+                          You have ${convertedValue} worth of {coinDetail.symbol}
+                        </b>
                       </div>
                     )}
-                    <form onSubmit={submitConversion}>
+                    <form className="w-full flex flex-col gap-4" onSubmit={submitConversion}>
                       <input
-                        type="float"
-                        placeholder="Filter by name or symbol"
+                        type="number"
+                        step="any"
+                        placeholder={`Enter ${coinDetail.symbol} amount`}
+                        className=" text-gray-700 h-12 px-4 rounded-md text-md border-2 focus:outline-blue-500 focus:border-0"
                         onChange={handleConversionText}
                       />
                       <button
                         type="submit"
                         disabled={!canSubmitConversion}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        className={classNames(
+                          'text-white font-bold py-2 px-4 rounded',
+                          `${
+                            !canSubmitConversion
+                              ? 'bg-gray-200 hover:none'
+                              : 'bg-blue-500 hover:bg-blue-700 '
+                          }`
+                        )}
                       >
                         Convert
                       </button>
