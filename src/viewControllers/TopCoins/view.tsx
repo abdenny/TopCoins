@@ -1,6 +1,7 @@
 import type { CryptoAssets, Asset } from 'types';
 
 import classNames from 'classnames';
+import { toUsdFormat, percentFormat } from 'util/formatters';
 
 import Table from 'components/Table';
 import Modal from 'components/Modal';
@@ -81,13 +82,7 @@ const TopCoinsView = ({
                         key={`${index}-${headerCell}`}
                         className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider"
                       >
-                        {headerCell && (
-                          <div>
-                            {headerCell}
-                            <button>Up</button>
-                            <button>Down</button>
-                          </div>
-                        )}
+                        {headerCell}
                       </th>
                     ));
                   }}
@@ -102,16 +97,10 @@ const TopCoinsView = ({
                       rank={asset.rank}
                       symbol={asset.symbol}
                       name={asset.name}
-                      marketCapUsd={parseFloat(asset.marketCapUsd)
-                        .toFixed(2)
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      volumeUsd24Hr={parseFloat(asset.volumeUsd24Hr)
-                        .toFixed(2)
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      priceUsd={parseFloat(asset.priceUsd)
-                        .toFixed(2)
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                      changePercent24Hr={parseFloat(parseFloat(asset.changePercent24Hr).toFixed(4))}
+                      marketCapUsd={toUsdFormat(asset.marketCapUsd)}
+                      volumeUsd24Hr={toUsdFormat(asset.volumeUsd24Hr)}
+                      priceUsd={toUsdFormat(asset.priceUsd)}
+                      changePercent24Hr={percentFormat(asset.changePercent24Hr)}
                     />
                   )) ?? []
                 );
@@ -132,8 +121,17 @@ const TopCoinsView = ({
               <section className="flex flex-col gap-4 justify-center px-6 py-4">
                 {!isCoinDetailLoading && coinDetail && (
                   <>
+                    <ol className="flex flex-col">
+                      <li>Rank #{coinDetail.rank}</li>
+                      <li>24H %Change: {percentFormat(coinDetail.changePercent24Hr)}</li>
+                      <li>24H Volume: {coinDetail.volumeUsd24Hr}</li>
+                      <li>24H Volume Weighted Avg: ${toUsdFormat(coinDetail.vwap24Hr)}</li>
+                      <li>Market Cap: {coinDetail.marketCapUsd}</li>
+                      <li>Supply: {coinDetail.supply}</li>
+                      <li>Max Supply: {coinDetail.maxSupply}</li>
+                    </ol>
                     <div>
-                      Currently 1 {coinDetail.name} = $ {coinDetail.priceUsd}
+                      Currently 1 {coinDetail.name} = $ {toUsdFormat(coinDetail.priceUsd)}
                     </div>
                     <div>
                       How much is your {coinDetail.symbol} worth? Convert to USD to find out!
@@ -141,7 +139,7 @@ const TopCoinsView = ({
                     {convertedValue && (
                       <div>
                         <b>
-                          You have ${convertedValue} worth of {coinDetail.symbol}
+                          You have ${toUsdFormat(convertedValue)} worth of {coinDetail.symbol}
                         </b>
                       </div>
                     )}
