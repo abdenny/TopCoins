@@ -6,12 +6,21 @@ import { useSelectParam } from 'hooks/useSearchParamHelpers';
 const useTopCoins = (): TopAssetsModelInterface => {
   const coinDetailParam = useSelectParam('coinDetail');
 
+  // TODO: Set up error handling in model
   const {
-    state: { data: topCoinsData, error: topCoinsError, loading: topCoinsLoading },
+    state: {
+      data: topCoinsData,
+      // error: topCoinsError,
+      loading: topCoinsLoading,
+    },
   } = useFetch<CryptoAssets>(topCryptoAssets());
 
   const {
-    state: { data: coinDetailData, error: coinDetailError, loading: coinDetailLoading },
+    state: {
+      data: coinDetailData,
+      // error: coinDetailError,
+      loading: coinDetailLoading,
+    },
     reset: resetCoinDetail,
     // When there is no coinDetailParam, we don't want to fetch the detail data.
   } = useFetch<CryptoAsset>(oneCryptoAsset(coinDetailParam), { isDisabled: !coinDetailParam });

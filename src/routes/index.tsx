@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const TopCoins = lazy(() => import('viewControllers/TopCoins'));
+const PageNotFound = lazy(() => import('viewControllers/PageNotFound'));
 
 // eslint-disable-next-line react/display-name
 export default (): JSX.Element => (
@@ -11,7 +12,7 @@ export default (): JSX.Element => (
         <Route path="/" element={<TopCoins />} />
 
         {/* Fallback route */}
-        <Route path="*" element={<div>404</div>} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
   </Suspense>
