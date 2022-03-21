@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import Table from 'components/Table';
 import Modal from 'components/Modal';
+import Loading from 'components/Loading';
 
 interface Props {
   topCoins?: CryptoAssets['data'];
@@ -43,8 +44,9 @@ const TopCoinsView = ({
             `${isTopCoinsLoading ? 'flex' : 'hidden'}`
           )}
         >
-          Loading
+          <Loading />
         </section>
+
         <section className={`${isTopCoinsLoading ? 'invisible' : 'visible'}`}>
           <div className="flex-none flex h-16 bg-gray-100 border-t px-4 items-center">
             <h1 className="font-semibold text-lg">
