@@ -20,3 +20,16 @@ export interface CryptoAssets {
   data: Array<Asset>;
   timestamp: number;
 }
+
+export type HeaderKey =
+  | 'rank'
+  | 'name'
+  | 'symbol'
+  | 'priceUsd'
+  | 'marketCapUsd'
+  | 'volumeUsd24Hr'
+  | 'changePercent24Hr';
+export interface SortObj {
+  key: HeaderKey;
+  order: 'asc' | 'desc';
+}

@@ -1,4 +1,4 @@
-import type { CryptoAssets, Asset } from 'types';
+import type { CryptoAssets, Asset, SortObj, HeaderKey } from 'types';
 
 import classNames from 'classnames';
 import { toUsdFormat, percentFormat } from 'util/formatters';
@@ -14,6 +14,8 @@ interface Props {
   coinDetail?: Asset;
   isCoinDetailLoading: boolean;
   handleFilterText: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  currentSort: SortObj;
+  orderTopCoinsByColumn: (sortObj: SortObj & { sortType: 'alpha' | 'numeric' }) => void;
   isViewingDetailModal: boolean;
   closeDetailModal: () => void;
   handleConversionText: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,14 +25,14 @@ interface Props {
 }
 
 const tableHeaderCols = [
-  'Rank',
-  'Name',
-  'Symbol',
-  'Price',
-  '24H %',
-  'Market Cap',
-  'Volume (24H)',
-  '',
+  { display: 'Rank', key: 'rank' },
+  { display: 'Name', key: 'name' },
+  { display: 'Symbol', key: 'symbol' },
+  { display: 'Price', key: 'priceUsd' },
+  { display: 'Change (24h)', key: 'changePercent24hr' },
+  { display: 'Market Cap', key: 'marketCapUsd' },
+  { display: 'Volume (24h)', key: 'volumeUsd24hr' },
+  { display: '', key: 'detail' },
 ];
 
 const TopCoinsView = ({
@@ -40,6 +42,8 @@ const TopCoinsView = ({
   coinDetail,
   isCoinDetailLoading,
   handleFilterText,
+  currentSort,
+  orderTopCoinsByColumn,
   isViewingDetailModal,
   closeDetailModal,
   handleConversionText,
@@ -82,7 +86,65 @@ const TopCoinsView = ({
                         key={`${index}-${headerCell}`}
                         className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider"
                       >
-                        {headerCell}
+                        {headerCell.display && (
+                          <div className="flex">
+                            {headerCell.display}
+                            <div className="flex text-gray-700">
+                              <button
+                                type="button"
+                                title="Sort ascending"
+                                aria-label="Sort ascending"
+                                onClick={() =>
+                                  orderTopCoinsByColumn({
+                                    key: headerCell.key as HeaderKey,
+                                    order: 'asc',
+                                    sortType:
+                                      headerCell.key === 'name' || headerCell.key === 'symbol'
+                                        ? 'alpha'
+                                        : 'numeric',
+                                  })
+                                }
+                                className={classNames(
+                                  'px-1 rounded',
+                                  `${
+                                    currentSort.key === headerCell.key &&
+                                    currentSort.order === 'asc'
+                                      ? 'bg-gray-200'
+                                      : 'bg-white'
+                                  }`
+                                )}
+                              >
+                                ↑
+                              </button>
+                              <button
+                                type="button"
+                                title="Sort descending"
+                                aria-label="Sort descending"
+                                onClick={() =>
+                                  orderTopCoinsByColumn({
+                                    key: headerCell.key as HeaderKey,
+                                    order: 'desc',
+                                    sortType:
+                                      headerCell.key === 'name' || headerCell.key === 'symbol'
+                                        ? 'alpha'
+                                        : 'numeric',
+                                  })
+                                }
+                                className={classNames(
+                                  'px-1 rounded',
+                                  `${
+                                    currentSort.key === headerCell.key &&
+                                    currentSort.order === 'desc'
+                                      ? 'bg-gray-200'
+                                      : 'bg-white'
+                                  }`
+                                )}
+                              >
+                                ↓
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </th>
                     ));
                   }}

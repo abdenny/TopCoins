@@ -1,3 +1,4 @@
+import type { SortObj } from 'types';
 import { useState, useEffect } from 'react';
 import useTopCoins from 'viewModels/useTopCoins';
 import useDebounce from 'hooks/useDebounce';
@@ -16,19 +17,55 @@ const TopCoinsController = (): JSX.Element => {
   } = useTopCoins();
 
   // Start Filter Logic
+  const [filteredTopCoins, setFilteredTopCoins] = useState(topCoins?.data);
   const [filterText, setFilterText] = useState('');
+  const [currentSort, setCurrentSort] = useState<SortObj>({ key: 'rank', order: 'asc' });
 
   const debouncedFilterText = useDebounce(filterText, 200);
 
   const handleFilterText = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    // Reset column sort when beginning filter text changes
+    if (filterText === '') setCurrentSort({ key: 'rank', order: 'asc' });
     setFilterText(e.target.value);
   };
 
-  const filteredTopCoins = topCoins?.data.filter(
-    (coin) =>
-      coin.name.toLowerCase().includes(debouncedFilterText.toLowerCase()) ||
-      coin.symbol.toLowerCase().includes(debouncedFilterText.toLowerCase())
-  );
+  useEffect(() => {
+    setFilteredTopCoins(
+      topCoins?.data.filter(
+        (coin) =>
+          coin.name.toLowerCase().includes(debouncedFilterText.toLowerCase()) ||
+          coin.symbol.toLowerCase().includes(debouncedFilterText.toLowerCase())
+      )
+    );
+  }, [topCoins?.data, debouncedFilterText]);
+
+  const orderTopCoinsByColumn = ({
+    key,
+    order,
+    sortType,
+  }: SortObj & { sortType: 'alpha' | 'numeric' }) => {
+    if (!filteredTopCoins) return;
+    const topCoinsCopy = [...filteredTopCoins];
+    topCoinsCopy.sort((a, b) => {
+      if (sortType === 'alpha') {
+        if (order === 'desc') {
+          return a[key] > b[key] ? -1 : 1;
+        } else {
+          return a[key] < b[key] ? -1 : 1;
+        }
+      } else if (sortType === 'numeric') {
+        if (order === 'desc') {
+          return parseFloat(a[key]) > parseFloat(b[key]) ? -1 : 1;
+        } else {
+          return parseFloat(a[key]) < parseFloat(b[key]) ? -1 : 1;
+        }
+      } else {
+        return 0;
+      }
+    });
+    setCurrentSort({ key, order });
+    setFilteredTopCoins(topCoinsCopy);
+  };
 
   // Start Conversion Form Logic
   const [conversionText, setConversionText] = useState('');
@@ -67,12 +104,14 @@ const TopCoinsController = (): JSX.Element => {
 
   return (
     <View
-      topCoins={filterText ? filteredTopCoins : topCoins?.data}
+      topCoins={filteredTopCoins}
       lastCheckedAt={topCoins?.timestamp}
       isTopCoinsLoading={isTopCoinsLoading}
       coinDetail={coinDetail?.data}
       isCoinDetailLoading={isCoinDetailLoading}
       handleFilterText={handleFilterText}
+      currentSort={currentSort}
+      orderTopCoinsByColumn={orderTopCoinsByColumn}
       isViewingDetailModal={isViewingDetailModal}
       closeDetailModal={closeDetailModal}
       handleConversionText={handleConversionText}
