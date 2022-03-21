@@ -54,7 +54,7 @@ const TopCoinsView = ({
 }: Props): JSX.Element => {
   return (
     <>
-      <main className="flex flex-col ">
+      <main className="flex flex-col">
         <section
           className={classNames(
             'h-screen items-center justify-center',
@@ -164,16 +164,18 @@ const TopCoinsView = ({
               <section className="flex flex-col gap-4 justify-center px-6 py-4">
                 {!isCoinDetailLoading && coinDetail && (
                   <>
-                    <h3 className="text-xl font-semibold">Details:</h3>
-                    <ol className="flex flex-col">
-                      <li>Rank #{coinDetail.rank}</li>
-                      <li>24H %Change: {percentFormat(coinDetail.changePercent24Hr)}</li>
-                      <li>24H Volume: {coinDetail.volumeUsd24Hr}</li>
-                      <li>24H Volume Weighted Avg: ${toUsdFormat(coinDetail.vwap24Hr)}</li>
-                      <li>Market Cap: {coinDetail.marketCapUsd}</li>
-                      <li>Supply: {coinDetail.supply}</li>
-                      <li>Max Supply: {coinDetail.maxSupply}</li>
-                    </ol>
+                    <div className="sm: hidden">
+                      <h3 className="text-xl font-semibold">Details:</h3>
+                      <ol className="flex flex-col">
+                        <li>Rank #{coinDetail.rank}</li>
+                        <li>24H %Change: {percentFormat(coinDetail.changePercent24Hr)}</li>
+                        <li>24H Volume: {coinDetail.volumeUsd24Hr}</li>
+                        <li>24H Volume Weighted Avg: ${toUsdFormat(coinDetail.vwap24Hr)}</li>
+                        <li>Market Cap: {coinDetail.marketCapUsd}</li>
+                        <li>Supply: {coinDetail.supply}</li>
+                        <li>Max Supply: {coinDetail.maxSupply}</li>
+                      </ol>
+                    </div>
                     <div>
                       Currently 1 {coinDetail.name} = $ {toUsdFormat(coinDetail.priceUsd)}
                     </div>
