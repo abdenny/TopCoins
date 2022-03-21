@@ -21,6 +21,17 @@ interface Props {
   convertedValue: string;
 }
 
+const tableHeaderCols = [
+  'Rank',
+  'Name',
+  'Symbol',
+  'Price',
+  '24H %',
+  'Market Cap',
+  'Volume (24H)',
+  '',
+];
+
 const TopCoinsView = ({
   topCoins,
   lastCheckedAt,
@@ -64,16 +75,22 @@ const TopCoinsView = ({
             <Table.Frame
               tableHeader={
                 <Table.Header
-                  headerCells={[
-                    'Rank',
-                    'Name',
-                    'Symbol',
-                    'Price',
-                    '24H %',
-                    'Market Cap',
-                    'Volume (24H)',
-                    '',
-                  ]}
+                  headerCells={(): Array<JSX.Element> => {
+                    return tableHeaderCols.map((headerCell, index) => (
+                      <th
+                        key={`${index}-${headerCell}`}
+                        className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider"
+                      >
+                        {headerCell && (
+                          <div>
+                            {headerCell}
+                            <button>Up</button>
+                            <button>Down</button>
+                          </div>
+                        )}
+                      </th>
+                    ));
+                  }}
                 />
               }
               tableRows={(): Array<JSX.Element> => {
