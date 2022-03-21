@@ -26,9 +26,10 @@ const useTopCoins = (): TopAssetsModelInterface => {
   } = useFetch<CryptoAsset>(oneCryptoAsset(coinDetailParam), { isDisabled: !coinDetailParam });
 
   const calculateUsdValue = (assetAmount: string): string => {
-    const usdValue = (
-      parseFloat(assetAmount) * parseFloat(coinDetailData?.data.priceUsd ?? '')
-    ).toFixed(2);
+    if (!coinDetailData?.data.priceUsd) return 'Unknown';
+    const usdValue = (parseFloat(assetAmount) * parseFloat(coinDetailData.data.priceUsd)).toFixed(
+      2
+    );
     return usdValue;
   };
 

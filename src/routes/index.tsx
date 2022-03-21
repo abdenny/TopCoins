@@ -6,8 +6,7 @@ import Loading from 'components/Loading';
 const TopCoins = lazy(() => import('viewControllers/TopCoins'));
 const PageNotFound = lazy(() => import('viewControllers/PageNotFound'));
 
-// eslint-disable-next-line react/display-name
-export default (): JSX.Element => (
+const AppRoutes = (): JSX.Element => (
   <Suspense fallback={<Loading />}>
     <BrowserRouter>
       <Routes>
@@ -19,3 +18,5 @@ export default (): JSX.Element => (
     </BrowserRouter>
   </Suspense>
 );
+
+export default AppRoutes;

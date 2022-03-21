@@ -119,7 +119,7 @@ const TopCoinsView = ({
                       Currently 1 {coinDetail.name} = $ {coinDetail.priceUsd}
                     </div>
                     <div>
-                      How much is your {coinDetail.symbol} worth? Convert to USD and find out!{' '}
+                      How much is your {coinDetail.symbol} worth? Convert to USD to find out!
                     </div>
                     {convertedValue && (
                       <div>

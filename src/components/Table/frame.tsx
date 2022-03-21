@@ -2,8 +2,6 @@ interface Props {
   tableHeader: JSX.Element;
   tableRows?: () => Array<JSX.Element>;
 }
-import Header from './header';
-import Row from './row';
 
 const Frame = ({ tableHeader, tableRows }: Props): JSX.Element => {
   return (
@@ -13,4 +11,4 @@ const Frame = ({ tableHeader, tableRows }: Props): JSX.Element => {
     </table>
   );
 };
-export default { Frame, Header, Row };
+export default Frame;

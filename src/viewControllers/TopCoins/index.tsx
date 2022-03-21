@@ -55,7 +55,9 @@ const TopCoinsController = (): JSX.Element => {
     setIsViewingDetailModal(!!coinDetailParam);
   }, [coinDetailParam]);
 
-  // Removing the param from the url will close the modal because of the useEffect above. Reset VM data so when another values is selected, the modal will not flash old data as it fetches the new coin.
+  // Removing the param from the url will close the modal because of the useEffect above.
+  // Reset VM data so when another values is selected, the modal will not flash old data as it fetches the new coin.
+  // Reset conversion form data so previous values are not persisted when the modal is closed.
   const closeDetailModal = (): void => {
     removeParam();
     resetCoinDetail();
