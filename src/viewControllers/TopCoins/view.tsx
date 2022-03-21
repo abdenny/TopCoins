@@ -164,7 +164,7 @@ const TopCoinsView = ({
               <section className="flex flex-col gap-4 justify-center px-6 py-4">
                 {!isCoinDetailLoading && coinDetail && (
                   <>
-                    <div className="sm: hidden">
+                    <div className="hidden sm:flex flex-col">
                       <h3 className="text-xl font-semibold">Details:</h3>
                       <ol className="flex flex-col">
                         <li>Rank #{coinDetail.rank}</li>

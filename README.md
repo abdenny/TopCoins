@@ -18,8 +18,6 @@
     * View specific details
     * Convert the units of said cryptocurrency to dollars
 
-
-
 ## Run locally
 Ensure that you have [Node.js](https://nodejs.org/) and [yarn](https://yarnpkg.com/getting-started/install) installed on your machine. 
 1. Clone this repository
@@ -29,3 +27,8 @@ Ensure that you have [Node.js](https://nodejs.org/) and [yarn](https://yarnpkg.c
 5. In a browser, navigate to `http://localhost:3000` (or the port you chose)
 6. To run the test suite, run the command `yarn test`
 
+### Improvement opportunities 
+ - Further optimization for mobile 
+ - Increased test coverage 
+ - Integrating more robust testing tools like Cypress  
+ - More error handling
